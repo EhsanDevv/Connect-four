@@ -69,10 +69,10 @@ void gamewinningcheck(int columndrop)
         
     }
     //for diagonal check
-    // For diagonal check: bottom-right to top-left (↖)
-for (int i = rows - 1; i >= 3; i--)  // Ensure there's space for 4 diagonally
+   
+for (int i = rows - 1; i >= 3; i--)  
 {
-    for (int j = columns - 1; j >= 3; j--)  // Ensure there's space for 4 diagonally
+    for (int j = columns - 1; j >= 3; j--)  
     {
         if (matrix[i][j] == matrix[i - 1][j - 1] && matrix[i][j] == matrix[i - 2][j - 2] && matrix[i][j] == matrix[i - 3][j - 3])
         {
@@ -80,21 +80,21 @@ for (int i = rows - 1; i >= 3; i--)  // Ensure there's space for 4 diagonally
             {
                 cout << "Game won by player 1!" << endl;
                 gameWin = true;
-                return;  // Exit the function once a winner is found
+                return;  
             }
             else if (matrix[i][j] == symbolplayer2)
             {
                 cout << "Game won by player 2!" << endl;
                 gameWin = true;
-                return;  // Exit the function once a winner is found
+                return; 
             }
         }
     }
 }
-// For diagonal check: bottom-right to top-left (↖)
-for (int i = rows - 1; i >= 3; i--)  // Ensure there's space for 4 diagonally
+// For diagonal check
+for (int i = rows - 1; i >= 3; i--)  
 {
-    for (int j = columns - 1; j >= 3; j--)  // Ensure there's space for 4 diagonally
+    for (int j = columns - 1; j >= 3; j--)  
     {
         if (matrix[i][j] == matrix[i - 1][j - 1] && matrix[i][j] == matrix[i - 2][j - 2] && matrix[i][j] == matrix[i - 3][j - 3])
         {
@@ -102,13 +102,13 @@ for (int i = rows - 1; i >= 3; i--)  // Ensure there's space for 4 diagonally
             {
                 cout << "Game won by player 1!" << endl;
                 gameWin = true;
-                return;  // Exit the function once a winner is found
+                return;  
             }
             else if (matrix[i][j] == symbolplayer2)
             {
                 cout << "Game won by player 2!" << endl;
                 gameWin = true;
-                return;  // Exit the function once a winner is found
+                return;  
             }
         }
     }
