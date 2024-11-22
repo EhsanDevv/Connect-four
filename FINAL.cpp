@@ -15,12 +15,12 @@ bool columnfull(int columndrop)
     return matrix[0][columndrop - 1] != symbol;
 }
 
-bool gameWin=false;
+bool gameWin = false;
 
 void gamewinningcheck(int columndrop)
 {
     int row = -1;
-    
+
     for (int j = rows - 1; j >= 0; j--)
     {
         if (matrix[j][columndrop - 1] == symbolplayer1 || matrix[j][columndrop - 1] == symbolplayer2)
@@ -29,92 +29,89 @@ void gamewinningcheck(int columndrop)
             break;
         }
     }
-    
-    //for horizontal check
-    for (int i = 0; i < columns - 3; i++)  
+
+    // for horizontal check
+    for (int i = 0; i < columns - 3; i++)
     {
         if (matrix[row][i] == matrix[row][i + 1] && matrix[row][i] == matrix[row][i + 2] && matrix[row][i] == matrix[row][i + 3])
         {
             if (matrix[row][i] == symbolplayer1)
             {
                 cout << "Game won by player 1!" << endl;
-                 gameWin=true;
+                gameWin = true;
             }
             else if (matrix[row][i] == symbolplayer2)
             {
                 cout << "Game won by player 2!" << endl;
-                gameWin=true;
+                gameWin = true;
             }
         }
     }
 
-    //now for vertical check
-    for (int i = rows-1; i >= rows-3; i--)
+    // now for vertical check
+    for (int i = rows - 1; i >= rows - 3; i--)
     {
-        if (matrix[i][columndrop-1] == matrix[i-1][columndrop-1] && matrix[i-1][columndrop-1] == matrix[i-2][columndrop-1] && matrix[i-2][columndrop-1] == matrix[i-3][columndrop-1])
+        if (matrix[i][columndrop - 1] == matrix[i - 1][columndrop - 1] && matrix[i - 1][columndrop - 1] == matrix[i - 2][columndrop - 1] && matrix[i - 2][columndrop - 1] == matrix[i - 3][columndrop - 1])
         {
-            if (matrix[i][columndrop-1]==symbolplayer1)
-            {
-               cout << "Game won by player 1!" << endl;
-                gameWin=true;
-            }
-            else if (matrix[i][columndrop-1]==symbolplayer2)
-            {
-                 cout << "Game won by player 2!" << endl;
-                 gameWin=true;
-            }
-            
-            
-        }
-        
-    }
-    //for diagonal check
-   
-for (int i = rows - 1; i >= 3; i--)  
-{
-    for (int j = columns - 1; j >= 3; j--)  
-    {
-        if (matrix[i][j] == matrix[i - 1][j - 1] && matrix[i][j] == matrix[i - 2][j - 2] && matrix[i][j] == matrix[i - 3][j - 3])
-        {
-            if (matrix[i][j] == symbolplayer1)
+            if (matrix[i][columndrop - 1] == symbolplayer1)
             {
                 cout << "Game won by player 1!" << endl;
                 gameWin = true;
-                return;  
             }
-            else if (matrix[i][j] == symbolplayer2)
+            else if (matrix[i][columndrop - 1] == symbolplayer2)
             {
                 cout << "Game won by player 2!" << endl;
                 gameWin = true;
-                return; 
             }
         }
     }
-}
-// For diagonal check
-for (int i = rows - 1; i >= 3; i--)  
-{
-    for (int j = columns - 1; j >= 3; j--)  
-    {
-        if (matrix[i][j] == matrix[i - 1][j - 1] && matrix[i][j] == matrix[i - 2][j - 2] && matrix[i][j] == matrix[i - 3][j - 3])
-        {
-            if (matrix[i][j] == symbolplayer1)
-            {
-                cout << "Game won by player 1!" << endl;
-                gameWin = true;
-                return;  
-            }
-            else if (matrix[i][j] == symbolplayer2)
-            {
-                cout << "Game won by player 2!" << endl;
-                gameWin = true;
-                return;  
-            }
-        }
-    }
-}
+    // for diagonal check
 
-    
+    for (int i = rows - 1; i >= 3; i--)
+    {
+        for (int j = 0; j <= columns - 4; j++)
+        {
+            if (matrix[i][j] == matrix[i - 1][j + 1] &&
+                matrix[i][j] == matrix[i - 2][j + 2] &&
+                matrix[i][j] == matrix[i - 3][j + 3])
+            {
+                if (matrix[i][j] == symbolplayer1)
+                {
+                    cout << "Game won by player 1!" << endl;
+                    gameWin = true;
+                    return;
+                }
+                else if (matrix[i][j] == symbolplayer2)
+                {
+                    cout << "Game won by player 2!" << endl;
+                    gameWin = true;
+                    return;
+                }
+            }
+        }
+    }
+    // For diagonal check
+    for (int i = rows - 1; i >= 3; i--)
+    {
+        for (int j = columns - 1; j >= 3; j--)
+        {
+            if (matrix[i][j] == matrix[i - 1][j - 1] && matrix[i][j] == matrix[i - 2][j - 2] && matrix[i][j] == matrix[i - 3][j - 3])
+            {
+                if (matrix[i][j] == symbolplayer1)
+                {
+                    cout << "Game won by player 1!" << endl;
+                    gameWin = true;
+                    return;
+                }
+                else if (matrix[i][j] == symbolplayer2)
+                {
+                    cout << "Game won by player 2!" << endl;
+                    gameWin = true;
+                    return;
+                }
+            }
+        }
+    }
 }
 
 void columndecider(int columndrop, int player)
@@ -183,7 +180,7 @@ int main()
 
     int columndrop;
     int count = rows * columns;
-    int count3=0;
+    int count3 = 0;
 
     for (int l = 0; l < count; l++)
     {
@@ -191,24 +188,24 @@ int main()
         {
             break;
         }
-        
+
         if (l % 2 == 0)
         {
-            cout << "Your turn PLayer 1: " ;
+            cout << "Your turn PLayer 1: ";
             cin >> columndrop;
             columndecider(columndrop, 1);
             gamewinningcheck(columndrop);
         }
         else if (l % 2 != 0)
         {
-            cout << "Your turn PLayer 2: " ;
+            cout << "Your turn PLayer 2: ";
             cin >> columndrop;
             columndecider(columndrop, 2);
             gamewinningcheck(columndrop);
         }
         count3++;
     }
-    if (count3==42)
+    if (count3 == 42)
     {
         cout << "It resulted in a draw as board is filled" << endl;
     }
