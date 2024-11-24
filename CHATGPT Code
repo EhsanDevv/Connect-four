@@ -1,0 +1,192 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+const int ROWS = 6;
+const int COLS = 7;
+
+void initializeBoard(char board[ROWS][COLS]) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            board[i][j] = '.';
+        }
+    }
+}
+
+void displayBoard(const char board[ROWS][COLS]) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            std::cout << board[i][j] << ' ';
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "0 1 2 3 4 5 6" << std::endl; // Column indices
+}
+
+bool isValidMove(const char board[ROWS][COLS], int col) {
+    return col >= 0 && col < COLS && board[0][col] == '.';
+}
+
+bool dropPiece(char board[ROWS][COLS], int col, char piece) {
+    if (!isValidMove(board, col)) {
+        return false;
+    }
+    for (int i = ROWS - 1; i >= 0; i--) {
+        if (board[i][col] == '.') {
+            board[i][col] = piece;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool checkWin(const char board[ROWS][COLS], char piece) {
+    // Check horizontal
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j <= COLS - 4; j++) {
+            if (board[i][j] == piece && board[i][j + 1] == piece &&
+                board[i][j + 2] == piece && board[i][j + 3] == piece) {
+                return true;
+            }
+        }
+    }
+    // Check vertical
+    for (int i = 0; i <= ROWS - 4; i++) {
+        for (int j = 0; j < COLS; j++) {
+            if (board[i][j] == piece && board[i + 1][j] == piece &&
+                board[i + 2][j] == piece && board[i + 3][j] == piece) {
+                return true;
+            }
+        }
+    }
+    // Check diagonal (bottom-left to top-right)
+    for (int i = 3; i < ROWS; i++) {
+        for (int j = 0; j <= COLS - 4; j++) {
+            if (board[i][j] == piece && board[i - 1][j + 1] == piece &&
+                board[i - 2][j + 2] == piece && board[i - 3][j + 3] == piece) {
+                return true;
+            }
+        }
+    }
+    // Check diagonal (top-left to bottom-right)
+    for (int i = 0; i <= ROWS - 4; i++) {
+        for (int j = 0; j <= COLS - 4; j++) {
+            if (board[i][j] == piece && board[i + 1][j + 1] == piece &&
+                board[i + 2][j + 2] == piece && board[i + 3][j + 3] == piece) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int evaluateMove(char board[ROWS][COLS], int col, char piece) {
+    // Temporarily place a piece in the column and check if it results in a win
+    for (int i = ROWS - 1; i >= 0; i--) {
+        if (board[i][col] == '.') {
+            board[i][col] = piece;
+            bool win = checkWin(board, piece);
+            board[i][col] = '.'; // Undo the move
+            return win ? 1 : 0;
+        }
+    }
+    return 0;
+}
+
+int computerMove(char board[ROWS][COLS], char computerPiece, char playerPiece) {
+    int bestCol = -1;
+
+    // Check if the computer can win immediately
+    for (int col = 0; col < COLS; col++) {
+        if (isValidMove(board, col) && evaluateMove(board, col, computerPiece)) {
+            return col;
+        }
+    }
+
+    // Check if the computer needs to block the player's win
+    for (int col = 0; col < COLS; col++) {
+        if (isValidMove(board, col) && evaluateMove(board, col, playerPiece)) {
+            return col;
+        }
+    }
+
+    // If no immediate threat or winning move, pick a random valid move
+    for (int col = 0; col < COLS; col++) {
+        if (isValidMove(board, col)) {
+            bestCol = col;
+            break;
+        }
+    }
+
+    return bestCol;
+}
+
+void playGame(bool vsComputer) {
+    char board[ROWS][COLS];
+    initializeBoard(board);
+
+    char player1 = 'X';
+    char player2 = 'O';
+    char currentPlayer = player1;
+    bool gameWon = false;
+
+    while (true) {
+        displayBoard(board);
+
+        int col;
+        if (vsComputer && currentPlayer == player2) {
+            std::cout << "Computer's turn..." << std::endl;
+            col = computerMove(board, player2, player1);
+        } else {
+            std::cout << "Player " << (currentPlayer == player1 ? "1" : "2") << "'s turn. Enter column (0-6): ";
+            std::cin >> col;
+
+            while (!isValidMove(board, col)) {
+                std::cout << "Invalid move. Try again: ";
+                std::cin >> col;
+            }
+        }
+
+        dropPiece(board, col, currentPlayer);
+
+        if (checkWin(board, currentPlayer)) {
+            displayBoard(board);
+            std::cout << "Player " << (currentPlayer == player1 ? "1" : "2") << " wins!" << std::endl;
+            gameWon = true;
+            break;
+        }
+
+        bool isDraw = true;
+        for (int i = 0; i < COLS; i++) {
+            if (isValidMove(board, i)) {
+                isDraw = false;
+                break;
+            }
+        }
+        if (isDraw) {
+            displayBoard(board);
+            std::cout << "It's a draw!" << std::endl;
+            break;
+        }
+
+        currentPlayer = (currentPlayer == player1) ? player2 : player1;
+    }
+}
+
+int main() {
+    srand(time(0));
+    int mode;
+    std::cout << "Welcome to Connect Four!\n";
+    std::cout << "Select Mode:\n1. Player vs Player\n2. Player vs Computer\n";
+    std::cin >> mode;
+
+    if (mode == 1) {
+        playGame(false);
+    } else if (mode == 2) {
+        playGame(true);
+    } else {
+        std::cout << "Invalid mode selected. Exiting...\n";
+    }
+
+    return 0;
+}
